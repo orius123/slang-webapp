@@ -3,6 +3,7 @@ package org.openscore.web.controllers;
 import com.google.gson.Gson;
 import org.openscore.web.client.ExecutionSummaryWebVo;
 import org.openscore.web.client.ExecutionTriggeringVo;
+import org.openscore.web.client.FlowInputVo;
 import org.openscore.web.client.FlowVo;
 import org.openscore.web.entities.ExecutionSummaryEntity;
 import org.openscore.web.services.ExecutionsService;
@@ -99,5 +100,25 @@ public class ExecutionsController {
         flows.add(new FlowVo("flow4", "id4"));
         flows.add(new FlowVo("flow5", "id5"));
         return new ResponseEntity<>(flows, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/flows/{flowId}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<List<FlowInputVo>> getFlowInputs(@PathVariable("flowId") String flowId) {
+        List<FlowInputVo> flowInputs1 = new ArrayList<>();
+        flowInputs1.add(new FlowInputVo("input1", "value1", true));
+        flowInputs1.add(new FlowInputVo("input2", "value2", false));
+        flowInputs1.add(new FlowInputVo("input3", "", true));
+
+        List<FlowInputVo> flowInputs2 = new ArrayList<>();
+        flowInputs2.add(new FlowInputVo("input4", "", true));
+        flowInputs2.add(new FlowInputVo("input5", "", false));
+        flowInputs2.add(new FlowInputVo("input6", "value3", true));
+        flowInputs2.add(new FlowInputVo("input7", "5", true));
+
+        if(flowId.equals("id1"))
+            return  new ResponseEntity<>(flowInputs1, HttpStatus.OK);
+        else
+            return  new ResponseEntity<>(flowInputs2, HttpStatus.OK);
     }
 }
