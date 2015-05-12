@@ -91,7 +91,7 @@ public class ExecutionsController {
 
     @RequestMapping(value = "/flows", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<List<FlowVo>> getExecution() {
+    public ResponseEntity<List<FlowVo>> getAllFlows() {
         List<FlowVo> flows = new ArrayList<>();
         flows.add(new FlowVo("flow1", "id1"));
         flows.add(new FlowVo("flow2", "id2"));
