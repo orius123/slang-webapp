@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import org.openscore.web.client.ExecutionSummaryWebVo;
 import org.openscore.web.client.ExecutionTriggeringVo;
 import org.openscore.web.client.FlowInputVo;
-import org.openscore.web.client.FlowVO;
+import org.openscore.web.client.FlowVo;
 import org.openscore.web.entities.ExecutionSummaryEntity;
 import org.openscore.web.services.ExecutionsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,13 +92,13 @@ public class ExecutionsController {
 
     @RequestMapping(value = "/flows", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<List<FlowVO>> getAllFlows() {
-        List<FlowVO> flows = new ArrayList<>();
-        flows.add(new FlowVO("flow1", "id1"));
-        flows.add(new FlowVO("flow2", "id2"));
-        flows.add(new FlowVO("flow3", "id3"));
-        flows.add(new FlowVO("flow4", "id4"));
-        flows.add(new FlowVO("flow5", "id5"));
+    public ResponseEntity<List<FlowVo>> getAllFlows() {
+        List<FlowVo> flows = new ArrayList<>();
+        flows.add(new FlowVo("flow1", "id1"));
+        flows.add(new FlowVo("flow2", "id2"));
+        flows.add(new FlowVo("flow3", "id3"));
+        flows.add(new FlowVo("flow4", "id4"));
+        flows.add(new FlowVo("flow5", "id5"));
         return new ResponseEntity<>(flows, HttpStatus.OK);
     }
 
