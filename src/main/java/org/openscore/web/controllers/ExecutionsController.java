@@ -3,6 +3,7 @@ package org.openscore.web.controllers;
 import com.google.gson.Gson;
 import org.openscore.web.client.ExecutionSummaryWebVo;
 import org.openscore.web.client.ExecutionTriggeringVo;
+import org.openscore.web.client.FlowVo;
 import org.openscore.web.entities.ExecutionSummaryEntity;
 import org.openscore.web.services.ExecutionsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -62,8 +65,8 @@ public class ExecutionsController {
     }
 
     @RequestMapping(value = "/executions/{executionId}", method = RequestMethod.GET)
-    @ResponseBody
-    public ResponseEntity<ExecutionSummaryWebVo> getExecution(@PathVariable("executionId") Long executionId) {
+         @ResponseBody
+         public ResponseEntity<ExecutionSummaryWebVo> getExecution(@PathVariable("executionId") Long executionId) {
         try {
             ExecutionSummaryEntity execution = service.getExecution(executionId);
 
@@ -84,5 +87,17 @@ public class ExecutionsController {
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @RequestMapping(value = "/flows", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<List<FlowVo>> getExecution() {
+        List<FlowVo> flows = new ArrayList<>();
+        flows.add(new FlowVo("flow1", "id1"));
+        flows.add(new FlowVo("flow2", "id2"));
+        flows.add(new FlowVo("flow3", "id3"));
+        flows.add(new FlowVo("flow4", "id4"));
+        flows.add(new FlowVo("flow5", "id5"));
+        return new ResponseEntity<>(flows, HttpStatus.OK);
     }
 }
