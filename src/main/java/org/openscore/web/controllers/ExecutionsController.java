@@ -102,7 +102,7 @@ public class ExecutionsController {
         return new ResponseEntity<>(flows, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/flows/{flowId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/flow/{flowId}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<List<FlowInputVo>> getFlowInputs(@PathVariable("flowId") String flowId) {
         List<FlowInputVo> flowInputs1 = new ArrayList<>();
