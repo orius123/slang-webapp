@@ -84,9 +84,17 @@ public class ExecutionsServiceImpl implements ExecutionsService {
 
         Set<SlangSource> slangDependencies = new HashSet<>();
 
-        File dir = new File(slangDir);
-
-        Set<File> files = getAllFilesRecursively(dir, new HashSet<File>());
+        Set<File> files = new HashSet<>();
+        if(slangDir == null){
+            try {
+                files = getAllFilesRecursively(new File(getClass().getResource("/content").toURI()), new HashSet<File>());
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        } else {
+            File dir = new File(slangDir);
+            files = getAllFilesRecursively(dir, new HashSet<File>());
+        }
 
         for(File file : files){
             slangDependencies.add(SlangSource.fromFile(file));
