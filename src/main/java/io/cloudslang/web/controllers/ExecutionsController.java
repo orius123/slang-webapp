@@ -5,8 +5,8 @@ import io.cloudslang.web.client.ExecutionSummaryWebVo;
 import io.cloudslang.web.client.ExecutionTriggeringVo;
 import io.cloudslang.web.client.FlowInputVo;
 import io.cloudslang.web.client.FlowVo;
-import io.cloudslang.web.services.ExecutionsService;
 import io.cloudslang.web.entities.ExecutionSummaryEntity;
+import io.cloudslang.web.services.ExecutionsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
@@ -94,8 +94,8 @@ public class ExecutionsController {
     @ResponseBody
     public ResponseEntity<List<FlowVo>> getAllFlows() {
         List<FlowVo> flows = new ArrayList<>();
-        flows.add(new FlowVo("less_than_percentage", "/content/io/cloudslang/base/comparisons/less_than_percentage.sl"));
-        flows.add(new FlowVo("print_text", "/content/io/cloudslang/base/print/print_text.sl"));
+        flows.add(new FlowVo("less_than_percentage", "content.io.cloudslang.base.comparisons.less_than_percentage"));
+        flows.add(new FlowVo("print_text", "content.io.cloudslang.base.print.print_text"));
         flows.add(new FlowVo("flow3", "id3"));
         flows.add(new FlowVo("flow4", "id4"));
         flows.add(new FlowVo("flow5", "id5"));
@@ -106,8 +106,8 @@ public class ExecutionsController {
     @ResponseBody
     public ResponseEntity<List<FlowInputVo>> getFlowInputs(@PathVariable("flowId") String flowId) {
         List<FlowInputVo> flowInputs1 = new ArrayList<>();
-        flowInputs1.add(new FlowInputVo("first_percentage", "10%", true));
-        flowInputs1.add(new FlowInputVo("second_percentage", "50%", true));
+        flowInputs1.add(new FlowInputVo("first_percentage", "", true));
+        flowInputs1.add(new FlowInputVo("second_percentage", "", true));
 
         List<FlowInputVo> flowInputs2 = new ArrayList<>();
         flowInputs2.add(new FlowInputVo("input4", "", true));
@@ -115,9 +115,10 @@ public class ExecutionsController {
         flowInputs2.add(new FlowInputVo("input6", "value3", true));
         flowInputs2.add(new FlowInputVo("input7", "5", true));
 
-        if(flowId.equals("/content/io/cloudslang/base/comparisons/less_than_percentage.sl"))
+        if(flowId.equals("content.io.cloudslang.base.comparisons.less_than_percentage"))
             return  new ResponseEntity<>(flowInputs1, HttpStatus.OK);
         else
             return  new ResponseEntity<>(flowInputs2, HttpStatus.OK);
     }
+
 }
