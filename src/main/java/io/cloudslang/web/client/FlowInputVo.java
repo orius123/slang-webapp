@@ -9,12 +9,12 @@ public class FlowInputVo {
 
     private String defaultValue;
 
-    private Boolean isRequired;
+    private Boolean required;
 
-    public FlowInputVo(String name, String defaultValue, Boolean isRequired) {
+    public FlowInputVo(String name, String defaultValue, Boolean required) {
         this.name = name;
         this.defaultValue = defaultValue;
-        this.isRequired = isRequired;
+        this.required = required;
     }
 
     public String getName() {
@@ -34,10 +34,10 @@ public class FlowInputVo {
     }
 
     public Boolean isRequired() {
-        return isRequired;
+        return required;
     }
 
-    public void setIsRequired(Boolean isRequired) {
-        this.isRequired = isRequired;
+    public void setRequired(Boolean required) {
+        this.required = required;
     }
 }
