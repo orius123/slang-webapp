@@ -1,4 +1,4 @@
-package org.openscore.web.client;
+package io.cloudslang.web.client;
 
 /**
  * Created by stoneo on 5/12/2015.

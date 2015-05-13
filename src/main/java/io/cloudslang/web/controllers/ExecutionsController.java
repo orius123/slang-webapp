@@ -1,12 +1,12 @@
-package org.openscore.web.controllers;
+package io.cloudslang.web.controllers;
 
 import com.google.gson.Gson;
-import org.openscore.web.client.ExecutionSummaryWebVo;
-import org.openscore.web.client.ExecutionTriggeringVo;
-import org.openscore.web.client.FlowInputVo;
-import org.openscore.web.client.FlowVo;
-import org.openscore.web.entities.ExecutionSummaryEntity;
-import org.openscore.web.services.ExecutionsService;
+import io.cloudslang.web.client.ExecutionSummaryWebVo;
+import io.cloudslang.web.client.ExecutionTriggeringVo;
+import io.cloudslang.web.client.FlowInputVo;
+import io.cloudslang.web.client.FlowVo;
+import io.cloudslang.web.services.ExecutionsService;
+import io.cloudslang.web.entities.ExecutionSummaryEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
