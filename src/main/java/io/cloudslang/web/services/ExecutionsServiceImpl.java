@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.Serializable;
+import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -47,8 +48,12 @@ public class ExecutionsServiceImpl implements ExecutionsService {
                                  Map<String, ? extends Serializable> runInputs,
                                  Map<String, ? extends Serializable> systemProperties) {
 
-        SlangSource flowSource = SlangSource.fromFile(new File(slangFilePath));
-
+        SlangSource flowSource = null;
+        try {
+            flowSource = SlangSource.fromFile(getClass().getResource(slangFilePath).toURI());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
         Long executionId = slang.compileAndRun(flowSource, getDependencies(slangDir), runInputs, systemProperties);
 
         ExecutionSummaryEntity execution = new ExecutionSummaryEntity();
