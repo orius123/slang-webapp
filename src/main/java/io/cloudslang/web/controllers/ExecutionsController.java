@@ -44,21 +44,21 @@ public class ExecutionsController {
     public Long triggerExecution(@RequestBody String executionTriggeringVoStr) {
 
         ExecutionTriggeringVo executionTriggeringVo = gson.fromJson(executionTriggeringVoStr, ExecutionTriggeringVo.class);
-
-        String slangDir = executionTriggeringVo.getSlangDir();
-
-        Map<String, Serializable> inputs = new HashMap<>();
-        if(executionTriggeringVo.getRunInputs() != null){
-            for(String key : executionTriggeringVo.getRunInputs().keySet()){
-                inputs.put(key, (Serializable) executionTriggeringVo.getRunInputs().get(key));
-            }
-        }
-        Map<String, Serializable> systemProperties = new HashMap<>();
-        if(executionTriggeringVo.getSystemProperties()!= null){
-            for(String key : executionTriggeringVo.getSystemProperties().keySet()){
-                inputs.put(key, (Serializable) executionTriggeringVo.getSystemProperties().get(key));
-            }
-        }
+//
+//        String slangDir = executionTriggeringVo.getSlangDir();
+//
+//        Map<String, Serializable> inputs = new HashMap<>();
+//        if(executionTriggeringVo.getRunInputs() != null){
+//            for(String key : executionTriggeringVo.getRunInputs().keySet()){
+//                inputs.put(key, (Serializable) executionTriggeringVo.getRunInputs().get(key));
+//            }
+//        }
+//        Map<String, Serializable> systemProperties = new HashMap<>();
+//        if(executionTriggeringVo.getSystemProperties()!= null){
+//            for(String key : executionTriggeringVo.getSystemProperties().keySet()){
+//                inputs.put(key, (Serializable) executionTriggeringVo.getSystemProperties().get(key));
+//            }
+//        }
 //        return service.triggerExecution(executionTriggeringVo.getSlangFilePath(),
 //                slangDir,
 //                inputs,
