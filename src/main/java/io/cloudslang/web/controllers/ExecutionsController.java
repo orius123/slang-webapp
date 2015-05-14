@@ -59,10 +59,16 @@ public class ExecutionsController {
                 inputs.put(key, (Serializable) executionTriggeringVo.getSystemProperties().get(key));
             }
         }
-        return service.triggerExecution(executionTriggeringVo.getSlangFilePath(),
-                slangDir,
-                inputs,
-                systemProperties);
+//        return service.triggerExecution(executionTriggeringVo.getSlangFilePath(),
+//                slangDir,
+//                inputs,
+//                systemProperties);
+        //todo: temp hard coded solution
+        String filePath = executionTriggeringVo.getSlangFilePath();
+        if(filePath.equals("/content/io/cloudslang/base/comparisons/less_than_percentage.sl")){
+            return 1l;
+        }
+        return 2l;
     }
 
     @RequestMapping(value = "/executions/{executionId}", method = RequestMethod.GET)

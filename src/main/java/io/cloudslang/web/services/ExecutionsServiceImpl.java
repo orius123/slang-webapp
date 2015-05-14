@@ -5,11 +5,14 @@ import io.cloudslang.lang.compiler.SlangSource;
 import io.cloudslang.score.facade.execution.ExecutionStatus;
 import io.cloudslang.web.entities.ExecutionSummaryEntity;
 import io.cloudslang.web.repositories.ExecutionSummaryRepository;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URISyntaxException;
 import java.util.HashSet;
@@ -49,9 +52,11 @@ public class ExecutionsServiceImpl implements ExecutionsService {
                                  Map<String, ? extends Serializable> systemProperties) {
 
         SlangSource flowSource = null;
+        InputStream resourceStream = getClass().getResourceAsStream(slangFilePath);
         try {
-            flowSource = SlangSource.fromFile(getClass().getResource(slangFilePath).toURI());
-        } catch (URISyntaxException e) {
+            byte[] bytes = IOUtils.toByteArray(resourceStream);
+            flowSource = SlangSource.fromBytes(bytes, slangFilePath);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         Long executionId = slang.compileAndRun(flowSource, getDependencies(slangDir), runInputs, systemProperties);
