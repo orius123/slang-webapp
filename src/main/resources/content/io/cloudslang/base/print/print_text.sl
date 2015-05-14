@@ -19,7 +19,7 @@ namespace: io.cloudslang.base.print
 operation:
   name: print_text
   inputs:
-    - text:
+    - text
   action:
     python_script: print text
   results:
