@@ -94,8 +94,8 @@ public class ExecutionsController {
     @ResponseBody
     public ResponseEntity<List<FlowVo>> getAllFlows() {
         List<FlowVo> flows = new ArrayList<>();
-        flows.add(new FlowVo("less_than_percentage", "content.io.cloudslang.base.comparisons.less_than_percentage"));
-        flows.add(new FlowVo("print_text", "content.io.cloudslang.base.print.print_text"));
+        flows.add(new FlowVo("less_than_percentage", "/content/io/cloudslang/base/comparisons/less_than_percentage.sl"));
+        flows.add(new FlowVo("print_text", "/content/io/cloudslang/base/print/print_text.sl"));
         flows.add(new FlowVo("flow3", "id3"));
         flows.add(new FlowVo("flow4", "id4"));
         flows.add(new FlowVo("flow5", "id5"));
@@ -115,7 +115,7 @@ public class ExecutionsController {
         flowInputs2.add(new FlowInputVo("input6", "value3", true));
         flowInputs2.add(new FlowInputVo("input7", "5", true));
 
-        if(flowId.equals("content.io.cloudslang.base.comparisons.less_than_percentage"))
+        if(flowId.equals("/content/io/cloudslang/base/comparisons/less_than_percentage.sl"))
             return  new ResponseEntity<>(flowInputs1, HttpStatus.OK);
         else
             return  new ResponseEntity<>(flowInputs2, HttpStatus.OK);
