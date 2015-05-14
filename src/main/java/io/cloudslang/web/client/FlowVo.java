@@ -9,9 +9,12 @@ public class FlowVo {
 
     private String id;
 
-    public FlowVo(String name, String id) {
+    private String path;
+
+    public FlowVo(String name, String id, String path) {
         this.name = name;
         this.id = id;
+        this.path = path;
     }
 
     public String getName() {
@@ -30,4 +33,11 @@ public class FlowVo {
         this.id = id;
     }
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 }
