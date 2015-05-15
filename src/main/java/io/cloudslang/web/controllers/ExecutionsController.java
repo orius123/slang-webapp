@@ -94,11 +94,10 @@ public class ExecutionsController {
     @ResponseBody
     public ResponseEntity<List<FlowVo>> getAllFlows() {
         List<FlowVo> flows = new ArrayList<>();
-        flows.add(new FlowVo("less_than_percentage", "content.io.cloudslang.base.comparisons.less_than_percentage", "/content/io/cloudslang/base/comparisons/less_than_percentage.sl"));
-        flows.add(new FlowVo("print_text", "content.io.cloudslang.base.print.print_text", "/content/io/cloudslang/base/print/print_text.sl"));
-        flows.add(new FlowVo("flow3", "id3", "/content/io/cloudslang/base/print/print_text.sl"));
-        flows.add(new FlowVo("flow4", "id4", "/content/io/cloudslang/base/print/print_text.sl"));
-        flows.add(new FlowVo("flow5", "id5", "/content/io/cloudslang/base/print/print_text.sl"));
+        flows.add(new FlowVo("turn_on_boiler", "content.io.cloudslang.smarthome.turn_on_boiler", "/content/io/cloudslang/smarthome/turn_on_boiler.sl"));
+        flows.add(new FlowVo("turn_on_music", "content.io.cloudslang.smarthome.turn_on_music", "/content/io/cloudslang/smarthome/turn_on_music.sl"));
+        flows.add(new FlowVo("turn_off_all_lights", "content.io.cloudslang.smarthome.turn_off_all_lights", "/content/io/cloudslang/smarthome/turn_off_all_lights.sl"));
+        flows.add(new FlowVo("leave_home", "content.io.cloudslang.smarthome.leave_home", "/content/io/cloudslang/smarthome/leave_home.sl"));
         return new ResponseEntity<>(flows, HttpStatus.OK);
     }
 
@@ -106,16 +105,11 @@ public class ExecutionsController {
     @ResponseBody
     public ResponseEntity<List<FlowInputVo>> getFlowInputs(@PathVariable("flowId") String flowId) {
         List<FlowInputVo> flowInputs1 = new ArrayList<>();
-        flowInputs1.add(new FlowInputVo("first_percentage", "", true));
-        flowInputs1.add(new FlowInputVo("second_percentage", "", true));
+        flowInputs1.add(new FlowInputVo("minutes", "", true));
 
         List<FlowInputVo> flowInputs2 = new ArrayList<>();
-        flowInputs2.add(new FlowInputVo("input4", "", true));
-        flowInputs2.add(new FlowInputVo("input5", "", false));
-        flowInputs2.add(new FlowInputVo("input6", "value3", true));
-        flowInputs2.add(new FlowInputVo("input7", "5", true));
 
-        if(flowId.equals("content.io.cloudslang.base.comparisons.less_than_percentage"))
+        if(flowId.equals("content.io.cloudslang.smarthome.turn_on_boiler"))
             return  new ResponseEntity<>(flowInputs1, HttpStatus.OK);
         else
             return  new ResponseEntity<>(flowInputs2, HttpStatus.OK);
