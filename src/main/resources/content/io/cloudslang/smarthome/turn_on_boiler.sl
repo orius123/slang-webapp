@@ -21,7 +21,7 @@ operation:
   inputs:
     - minutes
   action:
-    python_script: minutes + 3
+    python_script: print minutes
   results:
     - SUCCESS
     - FAILURE
