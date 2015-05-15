@@ -91,14 +91,13 @@ public class ExecutionsServiceImpl implements ExecutionsService {
 
         Set<File> files = new HashSet<>();
         if(slangDir == null){
+            files = new HashSet<>();
+        } else {
             try {
-                files = getAllFilesRecursively(new File(getClass().getResource("/content").toURI()), new HashSet<File>());
+                files = getAllFilesRecursively(new File(getClass().getResource(slangDir).toURI()), new HashSet<File>());
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
-        } else {
-            File dir = new File(slangDir);
-            files = getAllFilesRecursively(dir, new HashSet<File>());
         }
 
         for(File file : files){
