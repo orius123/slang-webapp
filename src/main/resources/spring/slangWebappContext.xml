@@ -17,10 +17,10 @@ http://www.springframework.org/schema/data/jpa http://www.springframework.org/sc
     <tx:annotation-driven/>
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="url" value="jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1;MVCC=TRUE;LOCK_TIMEOUT=5000"/>
-        <property name="driverClassName" value="org.h2.Driver"/>
-        <property name="username" value="sa"/>
-        <property name="password" value="sa"/>
+        <property name="url" value="jdbc:postgresql://localhost:5432/score"/>
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="username" value="postgres"/>
+        <property name="password" value="pass"/>
     </bean>
 
     <bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase"
@@ -59,5 +59,9 @@ http://www.springframework.org/schema/data/jpa http://www.springframework.org/sc
     <bean id="transactionTemplate"
           class="org.springframework.transaction.support.TransactionTemplate"
           p:transactionManager-ref="transactionManager" />
+
+    <bean id="jdbcTemplate"
+        class="org.springframework.jdbc.core.JdbcTemplate"
+        p:dataSource-ref="dataSource" />
 
 </beans>

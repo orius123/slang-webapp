@@ -45,20 +45,20 @@ public class ExecutionEventsListener4Web implements ScoreEventListener {
     public void onEvent(ScoreEvent event) throws InterruptedException {
 
         @SuppressWarnings("unchecked")
-        Map<String, Serializable> data = (Map<String, Serializable>) event.getData();
+        LanguageEventData data = (LanguageEventData) event.getData();
 
-        Long executionId = (Long) data.get(LanguageEventData.EXECUTIONID);
+        Long executionId = data.getExecutionId();
 
         if (event.getEventType().equals(ScoreLangConstants.SLANG_EXECUTION_EXCEPTION)) {
 
-            String exception = (String) data.get(LanguageEventData.EXCEPTION);
+            String exception = data.getException();
             service.updateExecution(executionId, ExecutionStatus.SYSTEM_FAILURE, exception, null);
 
         }
         else if (event.getEventType().equals(ScoreLangConstants.EVENT_EXECUTION_FINISHED)) {
 
-            String result = (String) data.get(LanguageEventData.RESULT);
-            String outputs = data.get(LanguageEventData.OUTPUTS).toString();
+            String result = data.getResult();
+            String outputs = data.getOutputs().toString();
 
             service.updateExecution(executionId, ExecutionStatus.COMPLETED, result, outputs);
         }
