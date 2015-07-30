@@ -7,8 +7,8 @@ import io.cloudslang.web.client.FlowInputVo;
 import io.cloudslang.web.client.FlowVo;
 import io.cloudslang.web.entities.ExecutionSummaryEntity;
 import io.cloudslang.web.services.ExecutionsService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,14 +32,15 @@ import java.util.Map;
  */
 
 @RestController
-@EnableAutoConfiguration
 public class ExecutionsController {
 
     @Autowired
-    ExecutionsService service;
+    private ExecutionsService service;
 
     private static Gson gson = new Gson();
 
+    @ApiOperation(value="Trigger a new execution",
+            notes="Something important")
     @RequestMapping(value = "/executions", method = RequestMethod.POST)
     public Long triggerExecution(@RequestBody String executionTriggeringVoStr) {
 
@@ -66,6 +67,8 @@ public class ExecutionsController {
 
     }
 
+    @ApiOperation(value="Get execution",
+            notes="Something important")
     @RequestMapping(value = "/executions/{executionId}", method = RequestMethod.GET)
          @ResponseBody
          public ResponseEntity<ExecutionSummaryWebVo> getExecution(@PathVariable("executionId") Long executionId) {
@@ -90,6 +93,8 @@ public class ExecutionsController {
         }
     }
 
+    @ApiOperation(value="Get flows",
+            notes="Something important")
     @RequestMapping(value = "/flows", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<List<FlowVo>> getAllFlows() {
@@ -101,6 +106,8 @@ public class ExecutionsController {
         return new ResponseEntity<>(flows, HttpStatus.OK);
     }
 
+    @ApiOperation(value="Get flow",
+            notes="Something important")
     @RequestMapping(value = "/flow/{flowId}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<List<FlowInputVo>> getFlowInputs(@PathVariable("flowId") String flowId) {
