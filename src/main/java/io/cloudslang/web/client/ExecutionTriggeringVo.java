@@ -1,5 +1,9 @@
 package io.cloudslang.web.client;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -10,41 +14,45 @@ import java.util.Map;
  */
 public class ExecutionTriggeringVo {
 
-    private String slangFilePath; // the slang file of the flow we want to trigger, location on the server of slangWebApp
-    private String slangDir; //The directory where all files are that we need as dependencies
+    private String slangFilePath;
+    private String slangDir;
     private Map<String, Object> runInputs;
     private Map<String, Object> systemProperties;
 
+    private ExecutionTriggeringVo(){}
+
+    public ExecutionTriggeringVo(String slangFilePath, String slangDir,
+                                 Map<String, Object> runInputs,
+                                 Map<String, Object> systemProperties) {
+        this.slangFilePath = slangFilePath;
+        this.slangDir = slangDir;
+        this.runInputs = runInputs;
+        this.systemProperties = systemProperties;
+    }
 
     public String getSlangFilePath() {
         return slangFilePath;
-    }
-
-    public void setSlangFilePath(String slangFilePath) {
-        this.slangFilePath = slangFilePath;
     }
 
     public String getSlangDir() {
         return slangDir;
     }
 
-    public void setSlangDir(String slangDir) {
-        this.slangDir = slangDir;
-    }
-
     public Map<String, Object> getRunInputs() {
         return runInputs;
-    }
-
-    public void setRunInputs(Map<String, Object> runInputs) {
-        this.runInputs = runInputs;
     }
 
     public Map<String, Object> getSystemProperties() {
         return systemProperties;
     }
 
-    public void setSystemProperties(Map<String, Object> systemProperties) {
-        this.systemProperties = systemProperties;
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(this, o);
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 }

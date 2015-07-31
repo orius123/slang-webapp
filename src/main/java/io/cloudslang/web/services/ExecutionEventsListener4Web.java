@@ -15,6 +15,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static io.cloudslang.lang.entities.ScoreLangConstants.SLANG_EXECUTION_EXCEPTION;
+import static io.cloudslang.lang.entities.ScoreLangConstants.EVENT_EXECUTION_FINISHED;
+
 /**
  * Created with IntelliJ IDEA.
  * User: kravtsov
@@ -35,8 +38,8 @@ public class ExecutionEventsListener4Web implements ScoreEventListener {
     public void init() {
         Set<String> eventTypes = new HashSet<>();
 
-        eventTypes.add(ScoreLangConstants.SLANG_EXECUTION_EXCEPTION); //Runtime exception – flow finished in the middle
-        eventTypes.add(ScoreLangConstants.EVENT_EXECUTION_FINISHED); //Flow completed
+        eventTypes.add(SLANG_EXECUTION_EXCEPTION); //Runtime exception – flow finished in the middle
+        eventTypes.add(EVENT_EXECUTION_FINISHED); //Flow completed
 
         slang.subscribeOnEvents(this, eventTypes);
     }
@@ -49,13 +52,13 @@ public class ExecutionEventsListener4Web implements ScoreEventListener {
 
         Long executionId = data.getExecutionId();
 
-        if (event.getEventType().equals(ScoreLangConstants.SLANG_EXECUTION_EXCEPTION)) {
+        if (event.getEventType().equals(SLANG_EXECUTION_EXCEPTION)) {
 
             String exception = data.getException();
             service.updateExecution(executionId, ExecutionStatus.SYSTEM_FAILURE, exception, null);
 
         }
-        else if (event.getEventType().equals(ScoreLangConstants.EVENT_EXECUTION_FINISHED)) {
+        else if (event.getEventType().equals(EVENT_EXECUTION_FINISHED)) {
 
             String result = data.getResult();
             String outputs = data.getOutputs().toString();

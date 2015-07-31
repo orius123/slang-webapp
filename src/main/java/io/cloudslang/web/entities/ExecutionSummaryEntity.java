@@ -8,6 +8,8 @@ package io.cloudslang.web.entities;
  */
 import io.cloudslang.engine.data.AbstractIdentifiable;
 import io.cloudslang.score.facade.execution.ExecutionStatus;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,6 +35,12 @@ public class ExecutionSummaryEntity extends AbstractIdentifiable {
     @Column(name = "OUTPUTS")
     private String outputs;
 
+    private ExecutionSummaryEntity(){}
+
+    public ExecutionSummaryEntity(Long executionId, ExecutionStatus status) {
+        this.executionId = executionId;
+        this.status = status;
+    }
 
     public String getResult() {
         return result;
@@ -45,11 +53,6 @@ public class ExecutionSummaryEntity extends AbstractIdentifiable {
     public Long getExecutionId() {
         return executionId;
     }
-
-    public void setExecutionId(Long executionId) {
-        this.executionId = executionId;
-    }
-
 
     public ExecutionStatus getStatus() {
         return status;
@@ -74,22 +77,22 @@ public class ExecutionSummaryEntity extends AbstractIdentifiable {
 
         ExecutionSummaryEntity that = (ExecutionSummaryEntity) o;
 
-        if (executionId != null ? !executionId.equals(that.executionId) : that.executionId != null) return false;
-        if (outputs != null ? !outputs.equals(that.outputs) : that.outputs != null) return false;
-        if (result != null ? !result.equals(that.result) : that.result != null) return false;
-        //noinspection RedundantIfStatement
-        if (status != that.status) return false;
-
-        return true;
+        return new EqualsBuilder()
+                .append(executionId, that.executionId)
+                .append(status, that.status)
+                .append(result, that.result)
+                .append(outputs, that.outputs)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int result1 = executionId != null ? executionId.hashCode() : 0;
-        result1 = 31 * result1 + (status != null ? status.hashCode() : 0);
-        result1 = 31 * result1 + (result != null ? result.hashCode() : 0);
-        result1 = 31 * result1 + (outputs != null ? outputs.hashCode() : 0);
-        return result1;
+        return new HashCodeBuilder()
+                .append(executionId)
+                .append(status)
+                .append(result)
+                .append(outputs)
+                .toHashCode();
     }
 }
 

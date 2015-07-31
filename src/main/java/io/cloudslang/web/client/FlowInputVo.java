@@ -1,15 +1,18 @@
 package io.cloudslang.web.client;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 /**
  * Created by stoneo on 5/12/2015.
  */
 public class FlowInputVo {
 
-    private String name;
+    private final String name;
 
-    private String defaultValue;
+    private final String defaultValue;
 
-    private Boolean required;
+    private final Boolean required;
 
     public FlowInputVo(String name, String defaultValue, Boolean required) {
         this.name = name;
@@ -21,23 +24,21 @@ public class FlowInputVo {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getDefaultValue() {
         return defaultValue;
-    }
-
-    public void setDefaultValue(String defaultValue) {
-        this.defaultValue = defaultValue;
     }
 
     public Boolean isRequired() {
         return required;
     }
 
-    public void setRequired(Boolean required) {
-        this.required = required;
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(this, o);
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 }

@@ -16,9 +16,9 @@ import java.util.Map;
 public interface ExecutionsService {
 
     @Transactional
-    Long triggerExecution(String slangFilePath,
-                          String slangDir,
-                          Map<String, ? extends Serializable> runInputs,
+    Long triggerExecution(String filePath,
+                          String classpath,
+                          Map<String, ? extends Serializable> inputs,
                           Map<String, ? extends Serializable> systemProperties);
 
     @Transactional(readOnly = true)

@@ -5,7 +5,9 @@ import io.cloudslang.lang.compiler.SlangSource;
 import io.cloudslang.score.facade.execution.ExecutionStatus;
 import io.cloudslang.web.entities.ExecutionSummaryEntity;
 import io.cloudslang.web.repositories.ExecutionSummaryRepository;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,10 +32,10 @@ import java.util.Set;
 public class ExecutionsServiceImpl implements ExecutionsService {
 
     @Autowired
-    Slang slang;
+    private Slang slang;
 
     @Autowired
-    ExecutionSummaryRepository repository;
+    private ExecutionSummaryRepository repository;
 
     /**
      * Trigger flow written in slang
@@ -51,19 +53,14 @@ public class ExecutionsServiceImpl implements ExecutionsService {
                                  Map<String, ? extends Serializable> runInputs,
                                  Map<String, ? extends Serializable> systemProperties) {
 
-        SlangSource flowSource = null;
-        InputStream resourceStream = getClass().getResourceAsStream(slangFilePath);
-        try {
-            byte[] bytes = IOUtils.toByteArray(resourceStream);
-            flowSource = SlangSource.fromBytes(bytes, slangFilePath);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        File slangFile = new File(slangFilePath);
+
+        SlangSource flowSource = SlangSource.fromFile(slangFile);
         Long executionId = slang.compileAndRun(flowSource, getDependencies(slangDir), runInputs, systemProperties);
 
-        ExecutionSummaryEntity execution = new ExecutionSummaryEntity();
-        execution.setExecutionId(executionId);
-        execution.setStatus(ExecutionStatus.RUNNING);
+        ExecutionSummaryEntity execution = new ExecutionSummaryEntity(
+                executionId, ExecutionStatus.RUNNING
+        );
 
         repository.save(execution);
 
@@ -88,6 +85,10 @@ public class ExecutionsServiceImpl implements ExecutionsService {
     private Set<SlangSource> getDependencies(String slangDir){
 
         Set<SlangSource> slangDependencies = new HashSet<>();
+
+        if (StringUtils.isEmpty(slangDir)) {
+            return null;
+        }
 
         Set<File> files = new HashSet<>();
         if(slangDir == null){
