@@ -1,6 +1,5 @@
 package io.cloudslang.web.controllers;
 
-import com.google.gson.Gson;
 import io.cloudslang.web.client.ExecutionSummaryWebVo;
 import io.cloudslang.web.client.ExecutionTriggeringVo;
 import io.cloudslang.web.entities.ExecutionSummaryEntity;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
@@ -34,30 +32,25 @@ public class ExecutionsController {
     @Autowired
     private ExecutionsService service;
 
-    private static Gson gson = new Gson();
-
-    @ApiOperation(value = "Trigger a new execution",
-            notes = "Something important")
+    @ApiOperation(value = "Trigger a new execution", notes = "Something important")
     @RequestMapping(value = "/executions", method = RequestMethod.POST)
     public Long triggerExecution(@RequestBody ExecutionTriggeringVo executionTriggeringVo) {
 
         String slangDir = executionTriggeringVo.getSlangDir();
 
         Map<String, Serializable> inputs = new HashMap<>();
-        if (MapUtils.isNotEmpty(executionTriggeringVo.getRunInputs())) {
-            for (String key : executionTriggeringVo.getRunInputs()
-                                                   .keySet()) {
-                inputs.put(key, (Serializable) executionTriggeringVo.getRunInputs()
-                                                                    .get(key));
+        Map<String, Object> userInputs = executionTriggeringVo.getRunInputs();
+        if (MapUtils.isNotEmpty(userInputs)) {
+            for (String key : userInputs.keySet()) {
+                inputs.put(key, (Serializable) userInputs.get(key));
             }
         }
 
         Map<String, Serializable> systemProperties = new HashMap<>();
-        if (MapUtils.isNotEmpty(executionTriggeringVo.getSystemProperties())) {
-            for (String key : executionTriggeringVo.getSystemProperties()
-                                                   .keySet()) {
-                inputs.put(key, (Serializable) executionTriggeringVo.getSystemProperties()
-                                                                    .get(key));
+        Map<String, Object> userSystemProperties = executionTriggeringVo.getSystemProperties();
+        if (MapUtils.isNotEmpty(userSystemProperties)) {
+            for (String key : userSystemProperties.keySet()) {
+                inputs.put(key, (Serializable) userSystemProperties.get(key));
             }
         }
 
@@ -68,10 +61,8 @@ public class ExecutionsController {
 
     }
 
-    @ApiOperation(value = "Get execution",
-            notes = "Something important")
+    @ApiOperation(value = "Get execution", notes = "Something important")
     @RequestMapping(value = "/executions/{executionId}", method = RequestMethod.GET)
-    @ResponseBody
     public ResponseEntity<ExecutionSummaryWebVo> getExecution(@PathVariable("executionId") Long executionId) {
         try {
 
