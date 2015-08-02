@@ -38,11 +38,7 @@ public final class FlowsServiceImpl implements FlowsService {
     @Override
     @Cacheable
     public TreeMap<String, FlowVo> getFlows(String classpath) {
-        String cp = classpath;
-        if (cp == null) {
-            String localContent = System.getProperty("user.dir") + File.separator + "content";
-            cp = System.getProperty(CSLANG_DEFAULT_CP, localContent);
-        }
+        String cp = getDefaultCp(classpath);
 
         Collection<File> cpFiles = FileUtils.listFiles(new File(cp), CSLANG_FILE_EXTENSIONS, true);
         Map<String, FlowVo> flows = cpFiles
@@ -52,6 +48,15 @@ public final class FlowsServiceImpl implements FlowsService {
 
         return new TreeMap<>(flows);
 
+    }
+
+    private String getDefaultCp(String classpath) {
+        String cp = classpath;
+        if (cp == null) {
+            String localContent = System.getProperty("user.dir") + File.separator + "content";
+            cp = System.getProperty(CSLANG_DEFAULT_CP, localContent);
+        }
+        return cp;
     }
 
     private FlowVo fileToFlowVo(File file) {
