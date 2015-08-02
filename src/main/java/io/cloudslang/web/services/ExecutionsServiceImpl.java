@@ -6,15 +6,12 @@ import io.cloudslang.score.facade.execution.ExecutionStatus;
 import io.cloudslang.web.client.FlowVo;
 import io.cloudslang.web.entities.ExecutionSummaryEntity;
 import io.cloudslang.web.repositories.ExecutionSummaryRepository;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.Serializable;
-import java.net.URISyntaxException;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -46,10 +43,14 @@ public final class ExecutionsServiceImpl implements ExecutionsService {
                                      Map<String, ? extends Serializable> systemProperties) {
 
         FlowVo flowVo = flowsService.getFlow(id, classpath);
-        File slangFile = new File(flowVo.getPath());
+        SlangSource flowSource = SlangSource.fromFile(new File(flowVo.getPath()));
 
-        SlangSource flowSource = SlangSource.fromFile(slangFile);
-        Long executionId = slang.compileAndRun(flowSource, getDependencies(classpath), runInputs, systemProperties);
+        Set<SlangSource> cpSlangSources = flowsService.getCpFiles(classpath)
+                                               .stream()
+                                               .map(SlangSource::fromFile)
+                                               .collect(Collectors.toSet());
+
+        Long executionId = slang.compileAndRun(flowSource, cpSlangSources, runInputs, systemProperties);
 
         ExecutionSummaryEntity execution = new ExecutionSummaryEntity(
                 executionId, ExecutionStatus.RUNNING
@@ -75,42 +76,4 @@ public final class ExecutionsServiceImpl implements ExecutionsService {
         execution.setOutputs(outputs);
     }
 
-    private Set<SlangSource> getDependencies(String slangDir) {
-
-        Set<SlangSource> slangDependencies = new HashSet<>();
-
-        if (StringUtils.isEmpty(slangDir)) {
-            return null;
-        }
-
-        Set<File> files = new HashSet<>();
-        try {
-            files = getAllFilesRecursively(
-                    new File(getClass().getResource(slangDir).toURI()), new HashSet<>());
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-
-        slangDependencies.addAll(files.stream()
-                                      .map(SlangSource::fromFile)
-                                      .collect(Collectors.toList()));
-
-        return slangDependencies;
-    }
-
-    private static Set<File> getAllFilesRecursively(File directory, Set<File> result) {
-        File[] filesInDir = directory.listFiles();
-        //If it is a file (filesInDir == null in case the directory is a file) - add it to list and return
-        if (filesInDir == null) {
-            result.add(directory);
-            return result;
-        }
-        //If it is a directory - do recursive call for each child
-        else {
-            for (File file : filesInDir) {
-                result.addAll(getAllFilesRecursively(file, result));
-            }
-            return result;
-        }
-    }
 }

@@ -11,6 +11,8 @@ package io.cloudslang.web.services;
 
 import io.cloudslang.web.client.FlowVo;
 
+import java.io.File;
+import java.util.Collection;
 import java.util.TreeMap;
 
 public interface FlowsService {
@@ -20,5 +22,7 @@ public interface FlowsService {
     FlowVo getFlow(String id, String classpath);
 
     void changeDefaultCp(String newCp);
+
+    Collection<File> getCpFiles(String classpath);
 
 }

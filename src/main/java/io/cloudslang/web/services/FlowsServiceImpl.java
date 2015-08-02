@@ -38,9 +38,8 @@ public final class FlowsServiceImpl implements FlowsService {
     @Override
     @Cacheable
     public TreeMap<String, FlowVo> getFlows(String classpath) {
-        String cp = getDefaultCp(classpath);
+        Collection<File> cpFiles = getCpFiles(classpath);
 
-        Collection<File> cpFiles = FileUtils.listFiles(new File(cp), CSLANG_FILE_EXTENSIONS, true);
         Map<String, FlowVo> flows = cpFiles
                 .stream()
                 .map(this::fileToFlowVo)
@@ -50,7 +49,12 @@ public final class FlowsServiceImpl implements FlowsService {
 
     }
 
-    private String getDefaultCp(String classpath) {
+    public Collection<File> getCpFiles(String classpath) {
+        String cp = getCp(classpath);
+        return FileUtils.listFiles(new File(cp), CSLANG_FILE_EXTENSIONS, true);
+    }
+
+    private String getCp(String classpath) {
         String cp = classpath;
         if (cp == null) {
             String localContent = System.getProperty("user.dir") + File.separator + "content";
