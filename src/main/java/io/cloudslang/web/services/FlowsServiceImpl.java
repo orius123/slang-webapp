@@ -27,7 +27,7 @@ import java.util.function.Function;
 import static java.util.stream.Collectors.toMap;
 
 @Service
-public class FlowsServiceImpl implements FlowsService {
+public final class FlowsServiceImpl implements FlowsService {
 
     public static final String[] CSLANG_FILE_EXTENSIONS = {"sl", "sl.yaml", "sl.yml"};
     public static final String CSLANG_DEFAULT_CP = "cslang.default.cp";

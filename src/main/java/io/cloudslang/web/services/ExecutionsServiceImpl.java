@@ -5,21 +5,18 @@ import io.cloudslang.lang.compiler.SlangSource;
 import io.cloudslang.score.facade.execution.ExecutionStatus;
 import io.cloudslang.web.entities.ExecutionSummaryEntity;
 import io.cloudslang.web.repositories.ExecutionSummaryRepository;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,7 +26,7 @@ import java.util.Set;
  */
 
 @Service
-public class ExecutionsServiceImpl implements ExecutionsService {
+public final class ExecutionsServiceImpl implements ExecutionsService {
 
     @Autowired
     private Slang slang;
@@ -82,7 +79,7 @@ public class ExecutionsServiceImpl implements ExecutionsService {
         execution.setOutputs(outputs);
     }
 
-    private Set<SlangSource> getDependencies(String slangDir){
+    private Set<SlangSource> getDependencies(String slangDir) {
 
         Set<SlangSource> slangDependencies = new HashSet<>();
 
@@ -91,19 +88,16 @@ public class ExecutionsServiceImpl implements ExecutionsService {
         }
 
         Set<File> files = new HashSet<>();
-        if(slangDir == null){
-            files = new HashSet<>();
-        } else {
-            try {
-                files = getAllFilesRecursively(new File(getClass().getResource(slangDir).toURI()), new HashSet<File>());
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
+        try {
+            files = getAllFilesRecursively(
+                    new File(getClass().getResource(slangDir).toURI()), new HashSet<>());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
         }
 
-        for(File file : files){
-            slangDependencies.add(SlangSource.fromFile(file));
-        }
+        slangDependencies.addAll(files.stream()
+                                      .map(SlangSource::fromFile)
+                                      .collect(Collectors.toList()));
 
         return slangDependencies;
     }

@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
+
+import static java.util.stream.Collectors.toMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,7 +29,7 @@ import java.util.Map;
  */
 
 @RestController
-public class ExecutionsController {
+public final class ExecutionsController {
 
     @Autowired
     private ExecutionsService service;
@@ -40,48 +41,42 @@ public class ExecutionsController {
 
         String slangDir = executionTriggeringVo.getSlangDir();
 
-        Map<String, Serializable> inputs = new HashMap<>();
-        Map<String, Object> userInputs = executionTriggeringVo.getRunInputs();
-        if (MapUtils.isNotEmpty(userInputs)) {
-            for (String key : userInputs.keySet()) {
-                inputs.put(key, (Serializable) userInputs.get(key));
-            }
-        }
+        Map<String, Serializable> inputs =
+                transformToSerializable(executionTriggeringVo.getRunInputs());
 
-        Map<String, Serializable> systemProperties = new HashMap<>();
-        Map<String, Object> userSystemProperties = executionTriggeringVo.getSystemProperties();
-        if (MapUtils.isNotEmpty(userSystemProperties)) {
-            for (String key : userSystemProperties.keySet()) {
-                inputs.put(key, (Serializable) userSystemProperties.get(key));
-            }
-        }
+        Map<String, Serializable> systemProperties =
+                transformToSerializable(executionTriggeringVo.getSystemProperties());
 
-        return service.triggerExecution(executionTriggeringVo.getSlangFilePath(),
+        return service.triggerExecution(
+                executionTriggeringVo.getSlangFilePath(),
                 slangDir,
                 inputs,
-                systemProperties);
+                systemProperties
+        );
 
+    }
+
+    private Map<String, Serializable> transformToSerializable(Map<String, Object> objectsMap) {
+        if (MapUtils.isEmpty(objectsMap)) {
+            return null;
+        }
+
+        return objectsMap
+                .entrySet()
+                .stream()
+                .collect(toMap(Map.Entry::getKey, e -> (Serializable) e.getValue()));
     }
 
     @ApiOperation(value = "Get execution", notes = "Something important")
     @RequestMapping(value = "/executions/{executionId}", method = RequestMethod.GET)
-    public ResponseEntity<ExecutionSummaryWebVo> getExecution(@PathVariable("executionId") Long executionId) {
-        try {
+    public ExecutionSummaryWebVo getExecution(@PathVariable("executionId") Long executionId) {
+        ExecutionSummaryEntity execution = service.getExecution(executionId);
 
-            ExecutionSummaryEntity execution = service.getExecution(executionId);
-
-            if (execution == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-
-            ExecutionSummaryWebVo executionVo = new ExecutionSummaryWebVo(execution);
-            return new ResponseEntity<>(executionVo, HttpStatus.OK);
-
-        } catch (IllegalArgumentException ex) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (RuntimeException ex) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        if (execution == null) {
+            throw new GlobalControllerExceptionHandler.NotFoundException();
         }
+
+        return new ExecutionSummaryWebVo(execution);
     }
 
 }

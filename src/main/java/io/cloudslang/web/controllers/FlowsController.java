@@ -22,7 +22,7 @@ import java.util.Map;
  */
 
 @RestController
-public class FlowsController {
+public final class FlowsController {
 
     @Autowired
     private FlowsService flowsService;
