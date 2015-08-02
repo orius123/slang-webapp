@@ -16,7 +16,7 @@ import java.util.Map;
 public interface ExecutionsService {
 
     @Transactional
-    Long triggerExecution(String filePath,
+    Long triggerExecution(String id,
                           String classpath,
                           Map<String, ? extends Serializable> inputs,
                           Map<String, ? extends Serializable> systemProperties);
@@ -25,5 +25,6 @@ public interface ExecutionsService {
     ExecutionSummaryEntity getExecution(Long executionId);
 
     @Transactional
-    void updateExecution(Long executionId, ExecutionStatus status, String result, String outputs);
+    void updateExecution(Long executionId, ExecutionStatus status,
+                         String result, String outputs);
 }

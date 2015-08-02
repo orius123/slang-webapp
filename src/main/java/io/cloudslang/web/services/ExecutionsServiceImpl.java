@@ -3,6 +3,7 @@ package io.cloudslang.web.services;
 import io.cloudslang.lang.api.Slang;
 import io.cloudslang.lang.compiler.SlangSource;
 import io.cloudslang.score.facade.execution.ExecutionStatus;
+import io.cloudslang.web.client.FlowVo;
 import io.cloudslang.web.entities.ExecutionSummaryEntity;
 import io.cloudslang.web.repositories.ExecutionSummaryRepository;
 import org.apache.commons.lang3.StringUtils;
@@ -32,28 +33,23 @@ public final class ExecutionsServiceImpl implements ExecutionsService {
     private Slang slang;
 
     @Autowired
+    private FlowsService flowsService;
+
+    @Autowired
     private ExecutionSummaryRepository repository;
 
-    /**
-     * Trigger flow written in slang
-     *
-     * @param slangFilePath    the slang file path containing the flow or operation
-     * @param slangDir         the parent directory of slang that contains all dependencies
-     * @param runInputs        the inputs for the flow or operation run
-     * @param systemProperties the system properties for the flow or operation run
-     * @return the execution ID in score
-     */
     @Override
     @Transactional
-    public Long triggerExecution(String slangFilePath,
-                                 String slangDir,
-                                 Map<String, ? extends Serializable> runInputs,
-                                 Map<String, ? extends Serializable> systemProperties) {
+    public Long triggerExecution(String id,
+                                     String classpath,
+                                     Map<String, ? extends Serializable> runInputs,
+                                     Map<String, ? extends Serializable> systemProperties) {
 
-        File slangFile = new File(slangFilePath);
+        FlowVo flowVo = flowsService.getFlow(id, classpath);
+        File slangFile = new File(flowVo.getPath());
 
         SlangSource flowSource = SlangSource.fromFile(slangFile);
-        Long executionId = slang.compileAndRun(flowSource, getDependencies(slangDir), runInputs, systemProperties);
+        Long executionId = slang.compileAndRun(flowSource, getDependencies(classpath), runInputs, systemProperties);
 
         ExecutionSummaryEntity execution = new ExecutionSummaryEntity(
                 executionId, ExecutionStatus.RUNNING
@@ -66,13 +62,13 @@ public final class ExecutionsServiceImpl implements ExecutionsService {
 
     @Override
     @Transactional(readOnly = true)
-    public ExecutionSummaryEntity getExecution(Long executionId){
+    public ExecutionSummaryEntity getExecution(Long executionId) {
         return repository.findByExecutionId(executionId);
     }
 
     @Override
     @Transactional
-    public void updateExecution(Long executionId, ExecutionStatus status, String result, String outputs){
+    public void updateExecution(Long executionId, ExecutionStatus status, String result, String outputs) {
         ExecutionSummaryEntity execution = repository.findByExecutionId(executionId);
         execution.setStatus(status);
         execution.setResult(result);
@@ -105,13 +101,13 @@ public final class ExecutionsServiceImpl implements ExecutionsService {
     private static Set<File> getAllFilesRecursively(File directory, Set<File> result) {
         File[] filesInDir = directory.listFiles();
         //If it is a file (filesInDir == null in case the directory is a file) - add it to list and return
-        if(filesInDir == null){
+        if (filesInDir == null) {
             result.add(directory);
             return result;
         }
         //If it is a directory - do recursive call for each child
         else {
-            for (File file : filesInDir){
+            for (File file : filesInDir) {
                 result.addAll(getAllFilesRecursively(file, result));
             }
             return result;

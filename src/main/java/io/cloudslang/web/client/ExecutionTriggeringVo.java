@@ -3,7 +3,6 @@ package io.cloudslang.web.client;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -14,8 +13,8 @@ import java.util.Map;
  */
 public class ExecutionTriggeringVo {
 
-    private String slangFilePath;
-    private String slangDir;
+    private String flowId;
+    private String classpath;
     private Map<String, Object> runInputs;
     private Map<String, Object> systemProperties;
 
@@ -24,18 +23,18 @@ public class ExecutionTriggeringVo {
     public ExecutionTriggeringVo(String slangFilePath, String slangDir,
                                  Map<String, Object> runInputs,
                                  Map<String, Object> systemProperties) {
-        this.slangFilePath = slangFilePath;
-        this.slangDir = slangDir;
+        this.flowId = slangFilePath;
+        this.classpath = slangDir;
         this.runInputs = runInputs;
         this.systemProperties = systemProperties;
     }
 
-    public String getSlangFilePath() {
-        return slangFilePath;
+    public String getFlowId() {
+        return flowId;
     }
 
-    public String getSlangDir() {
-        return slangDir;
+    public String getClasspath() {
+        return classpath;
     }
 
     public Map<String, Object> getRunInputs() {

@@ -8,7 +8,6 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,9 +36,9 @@ public final class ExecutionsController {
     @ApiOperation(value = "Trigger a new execution", notes = "Something important")
     @RequestMapping(value = "/executions", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public Long triggerExecution(@RequestBody ExecutionTriggeringVo executionTriggeringVo) {
+    public Long triggerExecutionByPath(@RequestBody ExecutionTriggeringVo executionTriggeringVo) {
 
-        String slangDir = executionTriggeringVo.getSlangDir();
+        String slangDir = executionTriggeringVo.getClasspath();
 
         Map<String, Serializable> inputs =
                 transformToSerializable(executionTriggeringVo.getRunInputs());
@@ -48,7 +47,7 @@ public final class ExecutionsController {
                 transformToSerializable(executionTriggeringVo.getSystemProperties());
 
         return service.triggerExecution(
-                executionTriggeringVo.getSlangFilePath(),
+                executionTriggeringVo.getFlowId(),
                 slangDir,
                 inputs,
                 systemProperties
