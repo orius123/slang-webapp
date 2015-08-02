@@ -29,10 +29,10 @@ import static io.cloudslang.lang.entities.ScoreLangConstants.EVENT_EXECUTION_FIN
 public class ExecutionEventsListener4Web implements ScoreEventListener {
 
     @Autowired
-    Slang slang;
+    private Slang slang;
 
     @Autowired
-    ExecutionsService service;
+    private ExecutionsService service;
 
     @PostConstruct
     public void init() {
