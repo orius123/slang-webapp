@@ -30,17 +30,15 @@ public final class FlowsController {
     @ApiOperation(value = "Get flows", notes = "Something important")
     @RequestMapping(value = "/flows", method = RequestMethod.GET)
     public Map<String, FlowVo> getAllFlows(
-            @RequestParam(value = "classpath", required = false) String classpath
-    ) {
+            @RequestParam(value = "classpath", required = false) String classpath) {
         return flowsService.getFlows(classpath);
     }
 
     @ApiOperation(value = "Get flows", notes = "Something important")
     @RequestMapping(value = "/flows/cp", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void changeDefaultCp(
-            @RequestParam(value = "classpath") String classpath
-    ) {
+    public void changeClasspath(
+            @RequestParam(value = "classpath") String classpath) {
         flowsService.changeDefaultCp(classpath);
     }
 
