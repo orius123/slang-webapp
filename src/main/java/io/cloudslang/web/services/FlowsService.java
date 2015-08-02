@@ -10,15 +10,15 @@
 package io.cloudslang.web.services;
 
 import io.cloudslang.web.client.FlowVo;
-import org.springframework.stereotype.Service;
 
 import java.util.TreeMap;
 
-@Service
 public interface FlowsService {
 
-    TreeMap<String, FlowVo> getFlows();
+    TreeMap<String, FlowVo> getFlows(String classpath);
 
-    FlowVo getFlow();
+    FlowVo getFlow(String id, String classpath);
+
+    void changeDefaultCp(String newCp);
 
 }

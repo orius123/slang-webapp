@@ -1,7 +1,10 @@
 package io.cloudslang.web.client;
 
+import io.cloudslang.lang.entities.bindings.Input;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import java.util.List;
 
 /**
  * Created by stoneo on 5/12/2015.
@@ -14,10 +17,13 @@ public class FlowVo {
 
     private final String path;
 
-    public FlowVo(String name, String id, String path) {
+    private final List<Input> inputs;
+
+    public FlowVo(String name, String id, String path, List<Input> inputs) {
         this.name = name;
         this.id = id;
         this.path = path;
+        this.inputs = inputs;
     }
 
     public String getName() {
@@ -30,6 +36,10 @@ public class FlowVo {
 
     public String getPath() {
         return path;
+    }
+
+    public List<Input> getInputs() {
+        return inputs;
     }
 
     @Override

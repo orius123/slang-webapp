@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
@@ -34,6 +35,7 @@ public class ExecutionsController {
 
     @ApiOperation(value = "Trigger a new execution", notes = "Something important")
     @RequestMapping(value = "/executions", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
     public Long triggerExecution(@RequestBody ExecutionTriggeringVo executionTriggeringVo) {
 
         String slangDir = executionTriggeringVo.getSlangDir();
